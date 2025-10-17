@@ -1,0 +1,29 @@
+// ==UserScript==
+// @name         Force Font
+// @namespace    http://tampermonkey.net/
+// @version      0.2
+// @description  Sets the font on all websites to YourFontnameHERE and overrides any website styles
+// @author       You
+// @match        *://*/*
+// @icon         https://e7.pngegg.com/pngimages/656/766/png-clipart-computer-terminal-computer-icons-bash-others-miscellaneous-angle.png
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Define your preferred font
+    const preferredFont = 'Consolas';
+
+    // Create a style element
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.textContent = `
+        *:not(span.material-icons):not(mat-icon):not(i):not(span.material-symbols-outlined):not(heroButton*) {
+            font-family: ${preferredFont} !important;
+        }
+    `;
+
+    // Append the style element to the head of the document
+    document.head.appendChild(style);
+})();
