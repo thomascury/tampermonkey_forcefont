@@ -1,9 +1,12 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/thomascury
 // @version      0.2
 // @description  Force website fonts to JetBrains Mono, tries to preserve icons
 // @author       You
+// @homepage     https://github.com/thomascury/tampermonkey_forcefont
+// @updateURL    https://raw.githubusercontent.com/thomascury/tampermonkey_forcefont/refs/heads/main/userscript_forcefont
+// @downloadURL  https://raw.githubusercontent.com/thomascury/tampermonkey_forcefont/refs/heads/main/userscript_forcefont
 // @match        *://*/*
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
