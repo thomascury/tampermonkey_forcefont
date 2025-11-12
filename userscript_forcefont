@@ -1,29 +1,58 @@
 // ==UserScript==
-// @name         Force Font
+// @name         Force Font - JetBrains Mono
 // @namespace    http://tampermonkey.net/
 // @version      0.2
-// @description  Sets the font on all websites to YourFontnameHERE and overrides any website styles
+// @description  Force website fonts to JetBrains Mono, tries to preserve icons
 // @author       You
 // @match        *://*/*
-// @icon         https://e7.pngegg.com/pngimages/656/766/png-clipart-computer-terminal-computer-icons-bash-others-miscellaneous-angle.png
-// @grant        none
+// @grant        GM_addStyle
+// @grant        GM_getResourceText
+// @resource     customCSS https://fonts.googleapis.com/css?family=JetBrains+Mono:wght@400;700&display=swap
+// @run-at       document-start
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Define your preferred font
-    const preferredFont = 'Consolas';
+    // Load JetBrains Mono font
+    var newCSS = GM_getResourceText("customCSS");
+    GM_addStyle(newCSS);
+
+    // Define the new font family
+    let newFont = '"JetBrains Mono", sans-serif';
+
+    // Whitelist of classes and elements to ignore
+    let whitelist = [
+        '.fa', '.fas', '.far', '.fal', '.fad', // Font Awesome
+        '.material-icons', // Material Icons
+        '.katex', '.MathJax', // Math equations
+        'code', 'pre' // Code snippets
+    ].join(', ');
 
     // Create a style element
-    const style = document.createElement('style');
+    let style = document.createElement('style');
     style.type = 'text/css';
-    style.textContent = `
-        *:not(span.material-icons):not(mat-icon):not(i):not(span.material-symbols-outlined):not(heroButton*) {
-            font-family: ${preferredFont} !important;
+    style.innerHTML = `
+        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}){
+            font-family: ${newFont};
+            line-height: 1.2;
+        }
+
+        textarea, code, tt, pre {
+        }
+
+        .post-text, .wmd-preview {
+            ul, ol {
+                li {
+                    margin-bottom: 0;
+                }
+            }
         }
     `;
 
-    // Append the style element to the head of the document
+    // Insert the style element into the document
     document.head.appendChild(style);
+
+    // Optional: Log to console that the script has run
+    console.log('Fonts forced to JetBrains Mono');
 })();
