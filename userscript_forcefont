@@ -26,12 +26,13 @@
 
     // Whitelist of classes and elements to ignore
     let whitelist = [
-        '.fa', '.fas', '.far', '.fal', '.fad', // Font Awesome
-        '.material-icons', // Material Icons
+        '.fa', '.fas', '.far', '.fal', '.fad', // Awesome font
+        '.material-icons', // Material icons
         '.katex', '.MathJax', // Math equations
-        '.icon-font-chess', // Chess Icons
+        '.icon-font-chess', // Chess icons
+        '.google-symbols', // Google icons
         'i', // Icons elements
-        'code', 'pre' // Code snippets
+        'code', 'pre', // Code snippets
     ].join(', ');
 
     // Create a style element
