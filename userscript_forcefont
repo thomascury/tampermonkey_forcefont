@@ -31,6 +31,7 @@
         '.katex', '.MathJax', // Math equations
         '.icon-font-chess', // Chess icons
         '.google-symbols', // Google icons
+        '.heroButton*', // Sharepoint HeroButton_* class
         'i', // Icons elements
         'code', 'pre', // Code snippets
     ].join(', ');
