@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.8
+// @version      0.9
 // @description  Force website fonts to JetBrains Mono, tries to preserve icons
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -36,22 +36,22 @@
         '.google-symbols', // Google icons
         'i', // Icons elements
         'code', 'pre', // Code snippets
+        "[class*='heroButton']", // Sharepoint HeroButton_* class
+        "[class*='vjs-']", // Video Player icons/buttons vjs-* class
     ].join(', ');
-    let sharepoint_herobutton = [
-        'heroButton', // Sharepoint HeroButton_* class
-    ].join(', ');
+
 
     // Create a style element
     let style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
-        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}):not([class*=${sharepoint_herobutton}]){
+        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}){
             font-family: ${newFont};
             line-height: 1.2;
         }
 
         // Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
-        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div [class*=${sharepoint_herobutton}] {
+        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div [class*="heroButton"] {
             font-family: "FabricMDL2Icons";
         }
 
