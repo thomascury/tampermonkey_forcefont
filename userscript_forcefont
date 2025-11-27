@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.7
+// @version      0.8
 // @description  Force website fonts to JetBrains Mono, tries to preserve icons
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -10,19 +10,22 @@
 // @match        *://*/*
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
-// @resource     customCSS https://fonts.googleapis.com/css?family=JetBrains+Mono:wght@400;700&display=swap
+// @resource     MonoFont https://fonts.googleapis.com/css?family=JetBrains+Mono:wght@400;700&display=swap
+// @resource     SymbolsFont https://fonts.googleapis.com/css?family=Noto+Emoji:wght@400;700&display=swap
 // @run-at       document-start
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Load JetBrains Mono font
-    var newCSS = GM_getResourceText("customCSS");
-    GM_addStyle(newCSS);
+    // Load Mono & Symbols fonts
+    var MonoFont = GM_getResourceText("MonoFont");
+    var SymbolsFont = GM_getResourceText("SymbolsFont");
+    GM_addStyle(MonoFont);
+    GM_addStyle(SymbolsFont);
 
     // Define the new font family
-    let newFont = '"JetBrains Mono", sans-serif';
+    let newFont = '"JetBrains Mono", "Noto Emoji", sans-serif';
 
     // Whitelist of classes and elements to ignore
     let whitelist = [
@@ -42,13 +45,14 @@
     let style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
-        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}) :not([class*=${sharepoint_herobutton}]){
+        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}):not([class*=${sharepoint_herobutton}]){
             font-family: ${newFont};
             line-height: 1.2;
         }
 
+        // Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
         body, p, span, a, li, h1, h2, h3, h4, h5, h6, div [class*=${sharepoint_herobutton}] {
-            font-family: "FabricMDL2Icons";  // Force back icon font because the inheritance is breaking the font when foring outer elements to Mono/Symbols by the script
+            font-family: "FabricMDL2Icons";
         }
 
         textarea, code, tt, pre {
