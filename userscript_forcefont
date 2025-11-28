@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.13
+// @version      0.14
 // @description  Force website fonts to a Monospaced font (JetBrains Mono), tries to preserve icons and adds icons/emoji support through a Symbols font (Noto Emoji)
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -52,6 +52,7 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
         'i', // Icons elements
         '.docon', // MS documentation docon icons
         'code', 'pre', // Code snippets
+        '.animatedRollingNumberHost', // Youtube animated numbers gets misaligned
         "[class*='heroButton']", // Sharepoint HeroButton_* class
         "[class*='vjs-']", // Video Player icons/buttons vjs-* class
         "[class*='icon']", // Any class containing 'icon', including, but not limited to: Material icons, Chess icons, Dash icons
@@ -65,7 +66,6 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
     style.innerHTML = `
         body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}){
             font-family: ${newFont};
-            line-height: 1.2;
         }
 
         // Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
