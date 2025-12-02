@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.14
+// @version      0.15
 // @description  Force website fonts to a Monospaced font (JetBrains Mono), tries to preserve icons and adds icons/emoji support through a Symbols font (Noto Emoji)
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -12,8 +12,29 @@
 // @grant        GM_getResourceText
 // @resource     MonoFont https://fonts.googleapis.com/css?family=JetBrains+Mono:wght@400;700&display=swap
 // @resource     SymbolsFont https://fonts.googleapis.com/css?family=Noto+Emoji:wght@400;700&display=swap
+// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @run-at       document-start
 // ==/UserScript==
+
+// Define the new font family
+let newFont = '"JetBrains Mono", "Noto Emoji", sans-serif';
+
+// Whitelist of classes and elements to ignore
+let whitelist = [
+    '.fa', '.fas', '.far', '.fal', '.fad', // Awesome font
+    '.katex', '.MathJax', // Math equations
+    'i', // Icons elements
+    '.docon', // MS documentation docon icons
+    'code', 'pre', // Code snippets
+    '.animatedRollingNumberHost', // Youtube animated numbers gets misaligned
+    "[class*='heroButton']", // Sharepoint HeroButton_* class
+    "[class*='vjs-']", // Video Player icons/buttons vjs-* class
+    "[class*='icon']", // Any class containing 'icon', including, but not limited to: Material icons, Chess icons, Dash icons
+    "[class*='symbol']", // Any class containing 'symbol', including, but not limited to: Google icons/class
+    "[aria-label='file content']", // Ignore GitHub code hidden textarea, will be matched in specific dedicated selector
+].join(', ');
+
 
 // Source: https://greasyfork.org/en/scripts/522884-default-trusted-types-policy-for-all-pages/code
 if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) {
@@ -33,6 +54,13 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
   };
 }
 
+// Forcing GitHub code hidden textarea to match Mono font to prevent text selection discrepancies
+waitForKeyElements ("#read-only-cursor-text-area.react-blob-textarea.react-blob-print-hide", alignHiddenTextareaFont);
+function alignHiddenTextareaFont (jNode) {
+    jNode[0].style.setProperty ("font-family", newFont, "important");
+    return true; //-- Check repeatedly.
+}
+
 (function() {
     'use strict';
 
@@ -41,23 +69,6 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
     var SymbolsFont = GM_getResourceText("SymbolsFont");
     GM_addStyle(MonoFont);
     GM_addStyle(SymbolsFont);
-
-    // Define the new font family
-    let newFont = '"JetBrains Mono", "Noto Emoji", sans-serif';
-
-    // Whitelist of classes and elements to ignore
-    let whitelist = [
-        '.fa', '.fas', '.far', '.fal', '.fad', // Awesome font
-        '.katex', '.MathJax', // Math equations
-        'i', // Icons elements
-        '.docon', // MS documentation docon icons
-        'code', 'pre', // Code snippets
-        '.animatedRollingNumberHost', // Youtube animated numbers gets misaligned
-        "[class*='heroButton']", // Sharepoint HeroButton_* class
-        "[class*='vjs-']", // Video Player icons/buttons vjs-* class
-        "[class*='icon']", // Any class containing 'icon', including, but not limited to: Material icons, Chess icons, Dash icons
-        "[class*='symbol']", // Any class containing 'symbol', including, but not limited to: Google icons/class
-    ].join(', ');
 
 
     // Create a style element
@@ -68,12 +79,16 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
             font-family: ${newFont};
         }
 
-        // Sharepoint specific: Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
+        // Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
         body, p, span, a, li, h1, h2, h3, h4, h5, h6, div [class*="heroButton"] {
             font-family: "FabricMDL2Icons";
         }
 
         textarea, code, tt, pre {
+        }
+
+        textarea#read-only-cursor-text-area.react-blob-textarea.react-blob-print-hide {
+            font-family: ${newFont} !important;
         }
 
         .post-text, .wmd-preview {
