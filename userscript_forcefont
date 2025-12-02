@@ -68,7 +68,7 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
             font-family: ${newFont};
         }
 
-        // Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
+        // Sharepoint specific: Force back icon font because the inheritance is breaking the font when outer elements is forced to Mono/Symbols font by the script
         body, p, span, a, li, h1, h2, h3, h4, h5, h6, div [class*="heroButton"] {
             font-family: "FabricMDL2Icons";
         }
