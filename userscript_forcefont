@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.15
+// @version      0.16
 // @description  Force website fonts to a Monospaced font (JetBrains Mono), tries to preserve icons and adds icons/emoji support through a Symbols font (Noto Emoji)
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -55,6 +55,7 @@ if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) 
 }
 
 // Forcing GitHub code hidden textarea to match Mono font to prevent text selection discrepancies
+// Source: https://stackoverflow.com/a/14618898
 waitForKeyElements ("#read-only-cursor-text-area.react-blob-textarea.react-blob-print-hide", alignHiddenTextareaFont);
 function alignHiddenTextareaFont (jNode) {
     jNode[0].style.setProperty ("font-family", newFont, "important");
