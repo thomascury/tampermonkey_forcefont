@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.16
+// @version      0.17
 // @description  Force website fonts to a Monospaced font (JetBrains Mono), tries to preserve icons and adds icons/emoji support through a Symbols font (Noto Emoji)
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -12,8 +12,8 @@
 // @grant        GM_getResourceText
 // @resource     MonoFont https://fonts.googleapis.com/css?family=JetBrains+Mono:wght@400;700&display=swap
 // @resource     SymbolsFont https://fonts.googleapis.com/css?family=Noto+Emoji:wght@400;700&display=swap
-// @require  http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-// @require  https://gist.github.com/raw/2625891/waitForKeyElements.js
+// @require      http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+// @require      https://gist.github.com/raw/2625891/waitForKeyElements.js
 // @run-at       document-start
 // ==/UserScript==
 
@@ -35,7 +35,7 @@ let whitelist = [
     "[aria-label='file content']", // Ignore GitHub code hidden textarea, will be matched in specific dedicated selector
 ].join(', ');
 
-
+// Managing TrustedTypes errors
 // Source: https://greasyfork.org/en/scripts/522884-default-trusted-types-policy-for-all-pages/code
 if (typeof trustedTypes !== 'undefined' && trustedTypes.defaultPolicy === null) {
   let s = s => s, [p, q, r] = [s, s, s]; s = trustedTypes;
@@ -86,10 +86,6 @@ function alignHiddenTextareaFont (jNode) {
         }
 
         textarea, code, tt, pre {
-        }
-
-        textarea#read-only-cursor-text-area.react-blob-textarea.react-blob-print-hide {
-            font-family: ${newFont} !important;
         }
 
         .post-text, .wmd-preview {
