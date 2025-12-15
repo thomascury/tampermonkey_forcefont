@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.19
+// @version      0.20
 // @description  Force website fonts to a Monospaced font (JetBrains Mono), tries to preserve icons and adds icons/emoji support through a Symbols font (Noto Emoji)
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
@@ -79,11 +79,10 @@ function alignHiddenTextareaFont (jNode) {
     style.type = 'text/css';
     style.innerHTML = `
         :is(body, p, span, a, li, h1, h2, h3, h4, h5, h6, div){
-            :is( :not(${whitelist}) ) {
+            :is( :not(${whitelist}):not(:is(${whitelist}) > :is(body, p, span, a, li, h1, h2, h3, h4, h5, h6, div)) ) {
+                // :not(${whitelist})                                                               is the initial whitelist to ignore
+                // :not(:is(${whitelist}) > :is(body, p, span, a, li, h1, h2, h3, h4, h5, h6, div)  is ignoring direct children of whitelisted elements
                 font-family: ${newFont};
-            }
-            :is( ${whitelist} ) * {
-                font-family: inherit;
             }
         }
 
