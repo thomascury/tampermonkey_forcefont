@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Force Font - JetBrains Mono
 // @namespace    https://github.com/thomascury
-// @version      0.17
+// @version      0.18
 // @description  Force website fonts to a Monospaced font (JetBrains Mono), tries to preserve icons and adds icons/emoji support through a Symbols font (Noto Emoji)
 // @author       You
 // @homepage     https://github.com/thomascury/tampermonkey_forcefont
