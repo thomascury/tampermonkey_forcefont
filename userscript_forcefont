@@ -78,8 +78,13 @@ function alignHiddenTextareaFont (jNode) {
     let style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
-        body, p, span, a, li, h1, h2, h3, h4, h5, h6, div :not(${whitelist}){
-            font-family: ${newFont};
+        :is(body, p, span, a, li, h1, h2, h3, h4, h5, h6, div){
+            :where( :not(${whitelist}) ) {
+                font-family: ${newFont};
+            }
+            :is( ${whitelist} ) * {
+                font-family: inherit;
+            }
         }
 
         // Sharepoint specific
