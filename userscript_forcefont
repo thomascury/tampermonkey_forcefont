@@ -34,6 +34,7 @@ let whitelist = [
     "[class*='symbol']", // Any class containing 'symbol', including, but not limited to: Google icons/class
     "[aria-label='file content']", // Ignore GitHub code hidden textarea, will be matched in specific dedicated selector
     '.nf', "[class*='nerd-font']", // Nerd font class
+    '.font-bwi', // BWI Font
 ].join(', ');
 
 // Managing TrustedTypes errors
